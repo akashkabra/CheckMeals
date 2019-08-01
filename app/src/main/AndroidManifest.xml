@@ -17,8 +17,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MondayActivity"
+            android:name=".DaysActivities.MondayActivity"
             android:label="Monday" />
+        <activity
+            android:name=".DaysActivities.TuesdayActivity"
+            android:label="Tuesday" />
+        <activity
+            android:name=".DaysActivities.WednesdayActivity"
+            android:label="Wednesday" />
+        <activity
+            android:name=".DaysActivities.ThursdayActivity"
+            android:label="Thursday" />
+        <activity
+            android:name=".DaysActivities.FridayActivity"
+            android:label="Friday" />
+        <activity
+            android:name=".DaysActivities.SaturdayActivity"
+            android:label="Saturday" />
+        <activity
+            android:name=".DaysActivities.SundayActivity"
+            android:label="Sunday" />
     </application>
 
 </manifest>

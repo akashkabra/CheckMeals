@@ -1,11 +1,10 @@
-package com.example.android.checkmeals
+package com.example.android.checkmeals.DaysActivities
 
-import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
+import com.example.android.checkmeals.R
 
-class MondayActivity : AppCompatActivity() {
+class TuesdayActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
