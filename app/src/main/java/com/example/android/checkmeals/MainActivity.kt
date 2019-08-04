@@ -3,7 +3,11 @@ package com.example.android.checkmeals
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.TextView
+import android.widget.Toast
 import com.example.android.checkmeals.DaysActivities.*
 
 class MainActivity : AppCompatActivity() {
@@ -67,8 +71,31 @@ class MainActivity : AppCompatActivity() {
             val sundayIntent = Intent(this, SundayActivity::class.java)
             startActivity(sundayIntent)
         }
-
-
-
     }
+
+    // Inflate the menu options from the XML file.
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+
+    // When item is clicked, do the following things
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        item?: return false
+        return when (item.itemId) {
+            R.id.settings -> {
+                // For now, just show a toast message to make sure it works.
+                // TODO: Make a XML + Kotlin file for this menu setting and create an intent to go to that page.
+                val toast = Toast.makeText(applicationContext, "Settings Clicked!", Toast.LENGTH_SHORT)
+                toast.show()
+                true
+            } else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+
+
+
 }
