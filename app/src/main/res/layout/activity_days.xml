@@ -21,25 +21,41 @@
             android:background="@drawable/textview_rectangle"
             android:layout_weight="1"
             android:textSize="20sp"
-            android:text="Calories"/>
+            android:padding="10dp"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:text="2500"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/textview_rectangle"
             android:layout_weight="1"
             android:textSize="20sp"
-            android:text="Fats"/>
+            android:padding="10dp"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:text="70"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/textview_rectangle"
             android:layout_weight="1"
             android:textSize="20sp"
-            android:text="Carbs"/>
+            android:padding="10dp"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:text="400"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/textview_rectangle"
             android:layout_weight="1"
             android:textSize="20sp"
-            android:text="Protein"/>
+            android:padding="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:gravity="center"
+            android:text="130"/>
 
 
     </LinearLayout>
