@@ -4,10 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FCE8E8"
     android:orientation="vertical">
 
     <!-- This XML file will be used for item_list.xml -->
 
+
+    <!--Move the textview attributes into a style as most of them are the same!-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/textview_rectangle"
+            android:backgroundTint="@android:color/holo_green_light"
             android:layout_weight="1"
             android:textSize="20sp"
             android:padding="10dp"
@@ -29,37 +33,37 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/textview_rectangle"
+            android:backgroundTint="@android:color/holo_red_light"
             android:layout_weight="1"
             android:textSize="20sp"
             android:padding="10dp"
             android:layout_marginLeft="5dp"
             android:gravity="center"
-            android:text="70"/>
+            android:text="83"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/textview_rectangle"
+            android:backgroundTint="@android:color/holo_orange_dark"
             android:layout_weight="1"
             android:textSize="20sp"
             android:padding="10dp"
             android:layout_marginLeft="5dp"
             android:gravity="center"
-            android:text="400"/>
+            android:text="281"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/textview_rectangle"
+            android:backgroundTint="@android:color/holo_purple"
             android:layout_weight="1"
             android:textSize="20sp"
             android:padding="10dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:gravity="center"
-            android:text="130"/>
-
-
+            android:text="156"/>
     </LinearLayout>
-
 
 
     <ListView
