@@ -1,14 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:background="@android:color/holo_green_light"
+    android:padding="25dp"
+    android:orientation="vertical"
     android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/popup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="This is a test!"/>
+        android:layout_gravity="center"
+        android:text="This feature is currently not working."/>
 
-</android.support.constraint.ConstraintLayout>
+    <EditText
+        android:id="@+id/editMe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:inputType="text"
+        android:text=""
+        android:hint="Please report this bug"/>
+    <Button
+        android:id="@+id/btn_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:onClick="testing"
+        android:text="Done"/>
+
+</LinearLayout>

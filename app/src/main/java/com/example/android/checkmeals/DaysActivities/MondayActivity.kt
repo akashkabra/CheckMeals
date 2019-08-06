@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Layout
 import android.transition.Slide
 import android.transition.TransitionManager
 import android.view.*
@@ -55,6 +54,8 @@ class MondayActivity : AppCompatActivity() {
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
                 )
+                popupWindow.setFocusable(true)
+                popupWindow.update()
 
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     popupWindow.elevation = 10.0F
@@ -82,4 +83,10 @@ class MondayActivity : AppCompatActivity() {
             } else -> super.onOptionsItemSelected(item)
         }
     }
+
+    private fun testing() {
+        val editText = findViewById<EditText>(R.id.editMe)
+        Toast.makeText(applicationContext, editText.text, Toast.LENGTH_SHORT).show()
+    }
+
 }
