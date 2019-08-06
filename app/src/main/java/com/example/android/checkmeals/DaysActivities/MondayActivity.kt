@@ -83,10 +83,4 @@ class MondayActivity : AppCompatActivity() {
             } else -> super.onOptionsItemSelected(item)
         }
     }
-
-    private fun testing() {
-        val editText = findViewById<EditText>(R.id.editMe)
-        Toast.makeText(applicationContext, editText.text, Toast.LENGTH_SHORT).show()
-    }
-
 }

@@ -22,6 +22,8 @@
         android:inputType="text"
         android:text=""
         android:hint="Please report this bug"/>
+
+    <!--TODO: Remove Button and Add a textview making it clickable to so setonclicklistener works.-->
     <Button
         android:id="@+id/btn_done"
         android:layout_width="wrap_content"
