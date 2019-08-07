@@ -5,11 +5,11 @@
     tools:context=".DaysActivities">
 
 
+    <!--Delete this item as it isn't working as expected.-->
     <item
-        android:id="@+id/addMeals"
+        android:id="@+id/addmeals"
         android:title="Add Meals"
         android:icon="@drawable/mealadd"
         app:showAsAction="always" />
-
 
 </menu>

@@ -11,5 +11,10 @@
         android:icon="@drawable/settingicon"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/setMacros"
+        android:title="Set Macros"
+        app:showAsAction="never" />
+
 
 </menu>
