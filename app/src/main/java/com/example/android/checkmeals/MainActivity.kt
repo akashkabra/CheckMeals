@@ -91,7 +91,12 @@ class MainActivity : AppCompatActivity() {
                 val toast = Toast.makeText(applicationContext, "Settings Clicked!", Toast.LENGTH_SHORT)
                 toast.show()
                 true
-            } else -> super.onOptionsItemSelected(item)
+            }
+            R.id.setMacros -> {
+                // TODO: Make a XML + Kotlin file for this menu setting and create an intent to go to that page.
+                Toast.makeText(applicationContext, "Macros Clicked!", Toast.LENGTH_SHORT).show()
+                true
+            }else -> super.onOptionsItemSelected(item)
         }
     }
 

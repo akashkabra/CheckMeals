@@ -11,5 +11,9 @@
         android:title="Add Meals"
         android:icon="@drawable/mealadd"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/test"
+        android:title="testingg"
+        app:showAsAction="always" />
 
 </menu>
