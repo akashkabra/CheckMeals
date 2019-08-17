@@ -31,14 +31,37 @@ class MondayActivity : AppCompatActivity() {
         var listView = findViewById(R.id.list) as ListView
         listView.adapter = mylistAdapter
 
-        outputHolder.setText("HELLO WORLD \n HELLO THERE")
-
         val cal = findViewById<TextView>(R.id.calories)
         cal.setOnClickListener {
             var setLine = "Enter amount of Calories"
             var setEdit = "Calories"
+            val id = R.id.calories
 //            TODO: Delete the return value from popup() because we aren't using it --> also remove it from the function implementation
-            value = popup(setLine, setEdit)
+            value = popup(setLine, setEdit, id)
+        }
+
+        val macroFats = findViewById<TextView>(R.id.fats)
+        macroFats.setOnClickListener {
+            var setLine = "Enter the amount of fats in grams"
+            var setEdit = "Fats"
+            val id = R.id.fats
+            popup(setLine, setEdit, id)
+        }
+
+        val macroCarbs = findViewById<TextView>(R.id.carbs)
+        macroCarbs.setOnClickListener {
+            var setLine = "Enter the amount of carbs in grams"
+            var setEdit = "Carbs"
+            val id = R.id.carbs
+            popup(setLine, setEdit, id)
+        }
+
+        val macroProtein = findViewById<TextView>(R.id.protein)
+        macroProtein.setOnClickListener {
+            var setLine = "Enter the amount of protein in grams"
+            var setEdit = "Protein"
+            val id = R.id.protein
+            popup(setLine, setEdit, id)
         }
 
 
@@ -62,7 +85,7 @@ class MondayActivity : AppCompatActivity() {
 //                val toast = Toast.makeText(applicationContext, "Adding Meals...", Toast.LENGTH_SHORT)
 //                toast.show()
 //              TODO: Delete the return value from popup() because we aren't using it --> also remove it from the function implementation
-                value = popup("test","hold")
+                value = popup("test","hold", 1)
                 true
             }
             R.id.test -> {
@@ -74,7 +97,7 @@ class MondayActivity : AppCompatActivity() {
     }
 
 //    Pop-up-Window
-    private fun popup(text: String, edit: String): String {
+    private fun popup(text: String, edit: String, id: Int): String {
         val inflater:LayoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflater.inflate(R.layout.popup_edittext, null)
         val popupWindow = PopupWindow(
@@ -107,7 +130,7 @@ class MondayActivity : AppCompatActivity() {
         changeEdit.setHint(edit)
 
 //      Change R.id.calories to get from @params so it works for everything
-        val macros = findViewById<TextView>(R.id.calories)
+        val macros = findViewById<TextView>(id)
 
         val mealInput = view.findViewById<EditText>(R.id.editMe)
         val btnClose = view.findViewById<Button>(R.id.btndone)
