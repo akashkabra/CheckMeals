@@ -29,7 +29,8 @@ class MondayActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_days)
 
-//    TODO: Make sure to call fileOutput() to make sure if user input previous data or not.
+//      Update the macros on the top
+        fileOutput()
 
         val mylistAdapter = listAdapter(this, mealNames)
         var listView = findViewById(R.id.list) as ListView
@@ -223,20 +224,51 @@ class MondayActivity : AppCompatActivity() {
     }
 
 //    Read the data from the file and fill the macros when activity loads if user previously entered the data
-//    TODO: Put openFileInput into a try and catch block to make sure the app doesn't crash
-//    TODO: Call this function in the beginning and manipulate the string into breaking it by macros and filling in data for user,
     private fun fileOutput() {
         var fileInputStream: FileInputStream
         val file = "macroDays.txt"
-        fileInputStream = openFileInput(file)
+//    Make sure the file exists, if not -- send a toast message saying file not found. (Delete later, once you remove MENU with ID @test in addmeal_menu
+        try {
+            fileInputStream = openFileInput(file)
+        } catch (e: Exception) {
+            Toast.makeText(applicationContext, "FILE NOT FOUND", Toast.LENGTH_SHORT).show()
+            return
+        }
         var inputSteamReader = InputStreamReader(fileInputStream)
         val bufferReader = BufferedReader(inputSteamReader)
+//    TODO: Delete all stringBuilders in this method, as we don't need it anymore.
         val stringBuilder = StringBuilder()
         var text: String? = null
+        var macroList = mutableListOf<String>()
         while ( { text = bufferReader.readLine(); text }() != null) {
             stringBuilder.append(text + "\n")
-            Log.i("TAG", "|" + text + "|")
+            macroList.add(breakString(text.toString()))
+//            Log.i("TAG", "|" + text + "|")
         }
+//        Log.i("MACRO", "|" + macroList[0] + "|")
+//        Log.i("MACRO", "|" + macroList[1] + "|")
+//        Log.i("MACRO", "|" + macroList[2] + "|")
+//        Log.i("MACRO", "|" + macroList[3] + "|")
+
+//    Set the macro values whenever the page is opened
+        findViewById<TextView>(R.id.calories).setText(macroList[0])
+        findViewById<TextView>(R.id.fats).setText(macroList[1])
+        findViewById<TextView>(R.id.carbs).setText(macroList[2])
+        findViewById<TextView>(R.id.protein).setText(macroList[3])
+
+//    TODO: Delete this and delete outputHolder textview in XML as well after testing is done.
         outputHolder.setText(stringBuilder)
      }
+
+
+//    Break the data so we can get the macro numbers only
+//    @param data -- A String which includes name of macro and amount of grams
+//    @return String -- returns the number of grams in each macro
+    private fun breakString(data: String): String {
+        val parts = data.split(" ")
+//        Log.d("SPLIT", "|" + parts[0] + "|")
+//        Log.d("SPLIT", "|" + parts[1] + "|")
+        return parts[1]
+    }
+
 }
