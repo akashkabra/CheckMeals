@@ -4,14 +4,15 @@
     android:layout_width="match_parent"
     android:background="#fcecec"
     android:padding="25dp"
+    android:gravity="center"
     android:orientation="vertical"
+    android:id="@+id/newWindow"
     android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/popup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:textSize="20sp"
         android:text="This feature is currently not working."/>
 
@@ -19,15 +20,14 @@
         android:id="@+id/editMe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:inputType="text"
+        android:inputType="number"
         android:hint="Please report this bug"/>
 
-    <Button
-        android:id="@+id/btndone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Done"/>
+    <!--<Button-->
+        <!--android:id="@+id/btndone"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:text="Done"/>-->
 
 </LinearLayout>
