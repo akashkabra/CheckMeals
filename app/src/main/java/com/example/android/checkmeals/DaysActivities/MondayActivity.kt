@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.popup_edittext.*
 import java.io.*
 import java.lang.Exception
 import java.lang.StringBuilder
+import kotlin.math.log
 
 class MondayActivity : AppCompatActivity() {
 
@@ -68,6 +69,13 @@ class MondayActivity : AppCompatActivity() {
             var setEdit = "Calories"
             popup(setLine, setEdit)
         }
+
+
+        val listview = findViewById<ListView>(R.id.list)
+        val num = listview.count
+        Toast.makeText(applicationContext, "num: " + num, Toast.LENGTH_SHORT).show()
+
+
     }
 
     // Inflate the menu options from the XML file.
@@ -92,6 +100,25 @@ class MondayActivity : AppCompatActivity() {
 //            Just testing purposes, TODO: Delete this!
             R.id.test -> {
 //                Toast.makeText(this, "test: ", Toast.LENGTH_SHORT).show()
+                val listview = findViewById<ListView>(R.id.list)
+                val num = listview.count
+                val list = listview.checkedItemPositions
+                val arrList = mutableListOf<String>()
+//                Toast.makeText(applicationContext, "num: " + num, Toast.LENGTH_SHORT).show()
+                var i = 0
+                while( i < num) {
+                    val bool = list.get(i)
+                    Log.i("BOOL", ":: " + bool)
+                    if (list.get(i)) {
+                        Log.i("DEBUG", "HELLO?????")
+                        arrList.add(listview.getItemAtPosition(i).toString())
+                        Log.i("CHECKED:", "Here: " + listview.getItemAtPosition(i).toString())
+                    }
+                        i++
+                }
+                Toast.makeText(applicationContext, "checked: " + list, Toast.LENGTH_SHORT).show()
+
+
                 fileOutput()
                 true
             }

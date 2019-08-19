@@ -15,7 +15,7 @@ class listAdapter(context: Context, val list: ArrayList<String>):
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val rowView = inflater.inflate(R.layout.checkbox_list, parent, false)
 
-        val mealName = rowView.findViewById(R.id.checkbox) as CheckBox
+        val mealName = rowView.findViewById<CheckBox>(R.id.checkbox)
 
         mealName.text = list[position]
 
