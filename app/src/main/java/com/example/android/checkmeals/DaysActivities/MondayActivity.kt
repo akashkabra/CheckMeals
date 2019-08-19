@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.renderscript.ScriptGroup
 import android.text.InputType
 import android.transition.Slide
 import android.transition.TransitionManager
@@ -24,7 +25,7 @@ class MondayActivity : AppCompatActivity() {
 
     var mealNames = arrayListOf<String>("Hello", "Test")
 
-//    TODO: REMOVE ALL FINDVIEWBYID, REPLACE USING LAMBDA. Makes code more precise since kotlin allows us to omit findviewbyid.
+    //    TODO: REMOVE ALL FINDVIEWBYID, REPLACE USING LAMBDA. Makes code more precise since kotlin allows us to omit findviewbyid.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_days)
@@ -35,6 +36,7 @@ class MondayActivity : AppCompatActivity() {
         val mylistAdapter = listAdapter(this, mealNames)
         var listView = findViewById(R.id.list) as ListView
         listView.adapter = mylistAdapter
+
 
 
 //        Set up OnClickListener for each textview macros so user can edit directly from there
@@ -77,14 +79,14 @@ class MondayActivity : AppCompatActivity() {
 
     // When item is clicked, do the following things
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        item?: return false
+        item ?: return false
         return when (item.itemId) {
             R.id.addmeals -> {
 //                TODO: Make a new POPUP() function and use this popupwindow to ADD MEALS into the database and then put into the checkbox list!
 //                val toast = Toast.makeText(applicationContext, "Adding Meals...", Toast.LENGTH_SHORT)
 //                toast.show()
 //                TODO: NEED NEW POPUP FUNCTION AS ITS VERY DIFFERENT
-                popup("test","hold")
+                popAddFood("Please enter the meal one and then press \"Add Another\" to add another meal. Press \"Finish\" once all meals are added.", "Enter Meal Name")
                 true
             }
 //            Just testing purposes, TODO: Delete this!
@@ -92,7 +94,8 @@ class MondayActivity : AppCompatActivity() {
 //                Toast.makeText(this, "test: ", Toast.LENGTH_SHORT).show()
                 fileOutput()
                 true
-            } else -> super.onOptionsItemSelected(item)
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -100,7 +103,7 @@ class MondayActivity : AppCompatActivity() {
 //    @param text -- A string variable which says what the popup window is for
 //    @param edit -- A string variable which shows the hint behind edittext
     private fun popup(text: String, edit: String) {
-        val inflater:LayoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val inflater: LayoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflater.inflate(R.layout.popup_edittext, null)
         val popupWindow = PopupWindow(
                 view,
@@ -111,11 +114,11 @@ class MondayActivity : AppCompatActivity() {
         popupWindow.update()
 
 //        Sets up elevation for popup window
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             popupWindow.elevation = 10.0F
         }
 //        Only if above API level 23
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val slideIn = Slide()
             slideIn.slideEdge = Gravity.TOP
             popupWindow.enterTransition = slideIn
@@ -130,6 +133,7 @@ class MondayActivity : AppCompatActivity() {
         val changeText = view.findViewById<TextView>(R.id.popup)
         changeText.setText(text)
         val changeEdit = view.findViewById<EditText>(R.id.editMe)
+        changeEdit.inputType = InputType.TYPE_CLASS_NUMBER
         changeEdit.setHint(edit)
 
 //        Make new EDITTEXT and button and get their IDs
@@ -174,7 +178,7 @@ class MondayActivity : AppCompatActivity() {
         )
     }
 
-//    Add new EditText inside the popup window
+    //    Add new EditText inside the popup window
 //    @param view -- reference to the layout
 //    @param hint -- A string which is the hint for EditText
     fun addEditText(view: View, hint: String): Int {
@@ -189,7 +193,7 @@ class MondayActivity : AppCompatActivity() {
         return editText.id
     }
 
-//    Add new Button inside the popup window
+    //    Add new Button inside the popup window
 //    @param view -- reference to the layout
 //    @param text -- A string which is the text inside Button
     fun addBtn(view: View, text: String): Int {
@@ -203,7 +207,7 @@ class MondayActivity : AppCompatActivity() {
         return btn.id
     }
 
-//    Create new or open if already created a file and input the data given by user
+    //    Create new or open if already created a file and input the data given by user
 //    @param data -- A String which includes name of macro and amount of grams
     private fun fileInput(data: String) {
         val fileOutputStream: FileOutputStream
@@ -223,7 +227,7 @@ class MondayActivity : AppCompatActivity() {
         Toast.makeText(applicationContext, "Data saved in file!", Toast.LENGTH_SHORT).show()
     }
 
-//    Read the data from the file and fill the macros when activity loads if user previously entered the data
+    //    Read the data from the file and fill the macros when activity loads if user previously entered the data
     private fun fileOutput() {
         var fileInputStream: FileInputStream
         val file = "macroDays.txt"
@@ -240,7 +244,7 @@ class MondayActivity : AppCompatActivity() {
         val stringBuilder = StringBuilder()
         var text: String? = null
         var macroList = mutableListOf<String>()
-        while ( { text = bufferReader.readLine(); text }() != null) {
+        while ({ text = bufferReader.readLine(); text }() != null) {
             stringBuilder.append(text + "\n")
             macroList.add(breakString(text.toString()))
 //            Log.i("TAG", "|" + text + "|")
@@ -258,10 +262,10 @@ class MondayActivity : AppCompatActivity() {
 
 //    TODO: Delete this and delete outputHolder textview in XML as well after testing is done.
         outputHolder.setText(stringBuilder)
-     }
+    }
 
 
-//    Break the data so we can get the macro numbers only
+    //    Break the data so we can get the macro numbers only
 //    @param data -- A String which includes name of macro and amount of grams
 //    @return String -- returns the number of grams in each macro
     private fun breakString(data: String): String {
@@ -269,6 +273,84 @@ class MondayActivity : AppCompatActivity() {
 //        Log.d("SPLIT", "|" + parts[0] + "|")
 //        Log.d("SPLIT", "|" + parts[1] + "|")
         return parts[1]
+    }
+
+    //    Pop-up-Window used for allowing users to add meals
+//    @param text -- A string variable which says what the popup window is for
+//    @param edit -- A string variable which shows the hint behind edittext
+    private fun popAddFood(text: String, edit: String) {
+        val inflater: LayoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val view = inflater.inflate(R.layout.popup_edittext, null)
+        val popupWindow = PopupWindow(
+                view,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        popupWindow.setFocusable(true)
+        popupWindow.update()
+
+//        Sets up elevation for popup window
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            popupWindow.elevation = 10.0F
+        }
+//        Only if above API level 23
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val slideIn = Slide()
+            slideIn.slideEdge = Gravity.TOP
+            popupWindow.enterTransition = slideIn
+
+            val slideOut = Slide()
+            slideOut.slideEdge = Gravity.RIGHT
+            popupWindow.exitTransition = slideOut
+//            Toast.makeText(applicationContext, "Done!", Toast.LENGTH_SHORT).show()
+        }
+
+//        Set the text and hint for the popup view
+        val changeText = view.findViewById<TextView>(R.id.popup)
+        changeText.setText(text)
+        val changeEdit = view.findViewById<EditText>(R.id.editMe)
+        changeEdit.inputType = InputType.TYPE_CLASS_TEXT
+        changeEdit.setHint(edit)
+
+//        Make new button and get the IDs
+        val btnDone = addBtn(view, "Add Another")
+        val btnFinished = addBtn(view, "Finished")
+
+//        Get references to the views
+        val mealInput = view.findViewById<EditText>(R.id.editMe)
+
+//        Set onclicklistener to close the popup-window, update values, and store into .txt file internally
+        val btnNew = view.findViewById<Button>(btnDone)
+        btnNew.setOnClickListener {
+            popupWindow.dismiss()
+
+            val mealName = mealInput.text.toString()
+            mealNames.add(mealName)
+
+            Log.i("NEW", mealName)
+            popAddFood(text, edit)
+        }
+        val btnclose = view.findViewById<Button>(btnFinished)
+        btnclose.setOnClickListener {
+            popupWindow.dismiss()
+
+            val mealName = mealInput.text.toString()
+            if (mealName.trim() != "") {
+                Log.i("CLOSE", " NOT EMPTY")
+                mealNames.add(mealName)
+            }
+            Log.i("CLOSE", "EMPTY")
+            Log.i("CLOSE", mealName)
+        }
+
+//        Show the popup window on top of the main root layout
+        TransitionManager.beginDelayedTransition(root_layout)
+        popupWindow.showAtLocation(
+                root_layout,
+                Gravity.CENTER,
+                0,
+                0
+        )
     }
 
 }
