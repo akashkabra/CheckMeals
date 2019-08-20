@@ -71,9 +71,17 @@ class MondayActivity : AppCompatActivity() {
         }
 
 
+
+
         val listview = findViewById<ListView>(R.id.list)
         val num = listview.count
         Toast.makeText(applicationContext, "num: " + num, Toast.LENGTH_SHORT).show()
+
+        listview.setOnItemClickListener{parent, view, position, id ->
+            val item = position
+            Log.i("LSFSF", ":" + position)
+
+        }
 
 
     }
@@ -100,7 +108,25 @@ class MondayActivity : AppCompatActivity() {
 //            Just testing purposes, TODO: Delete this!
             R.id.test -> {
 //                Toast.makeText(this, "test: ", Toast.LENGTH_SHORT).show()
+
+
+
                 val listview = findViewById<ListView>(R.id.list)
+                var a = 0
+                while (a < listview.childCount) {
+                    val c: CheckBox
+                    c = listview.getChildAt(a) as CheckBox
+                    if (c.isChecked) {
+                        Log.i("CHECKED", ":: " + c.text.toString())
+                    } else {
+                        Log.i("NOT CHECKED", ":: " + c.text.toString())
+                    }
+                    a++
+                }
+
+
+
+
                 val num = listview.count
                 val list = listview.checkedItemPositions
                 val arrList = mutableListOf<String>()
@@ -119,6 +145,7 @@ class MondayActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "checked: " + list, Toast.LENGTH_SHORT).show()
 
 
+//                -----------------------------------------------------
                 fileOutput()
                 true
             }
