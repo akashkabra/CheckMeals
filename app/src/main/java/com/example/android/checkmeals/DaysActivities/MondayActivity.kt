@@ -11,6 +11,8 @@ import android.transition.TransitionManager
 import android.util.Log
 import android.view.*
 import android.widget.*
+import com.example.android.checkmeals.Database.DBHelper
+import com.example.android.checkmeals.Database.MealEntryTemp
 import com.example.android.checkmeals.R
 import com.example.android.checkmeals.listAdapter
 import kotlinx.android.synthetic.main.activity_days.*
@@ -23,6 +25,7 @@ import kotlin.math.log
 class MondayActivity : AppCompatActivity() {
 
     //    TODO: The whole SQLite database implementation
+    lateinit var DBHelper: DBHelper
 
     var mealNames = arrayListOf<String>("Hello", "Test")
 
@@ -30,6 +33,12 @@ class MondayActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_days)
+
+        DBHelper = DBHelper(this)
+        addMeals("test123")
+        addMeals("meal1")
+        addMeals("meal2")
+        getMeals()
 
 //      Update the macros on the top
         fileOutput()
@@ -405,6 +414,24 @@ class MondayActivity : AppCompatActivity() {
                 0,
                 0
         )
+    }
+
+    fun addMeals(mealName: String) {
+        DBHelper.insertMeal("Monday", mealName)
+    }
+
+    fun getMeals() {
+        var data: ArrayList<MealEntryTemp>
+        data = DBHelper.getData("Monday")
+        val a = findViewById<TextView>(R.id.testingDB)
+        val strBuilder = StringBuilder()
+        data.forEach {
+            strBuilder.append("" + it.mealName + " - " + it.day + " - " + it.ate + "\n")
+            Log.i("DATA", ": " + it.mealName)
+            Log.i("DATA", ": " + it.day)
+            Log.i("DATA", ": " + it.ate)
+        }
+        a.setText(strBuilder)
     }
 
 }

@@ -2,9 +2,13 @@ package com.example.android.checkmeals.Database
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
+import android.widget.Toast
 import java.time.DayOfWeek
 
 class DBHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -23,6 +27,7 @@ class DBHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, nul
 
 
 //    Insert the meals users input into their days.
+//    TODO: CHANGE INPUT PARAMETERS TO MEALENTRYTEMP, it will be one instead of two.
     @Throws(SQLiteConstraintException::class)
     fun insertMeal(day: String, mealName: String): Boolean {
         val db = writableDatabase
@@ -48,8 +53,31 @@ class DBHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, nul
 //        return true
 //    }
 
-    fun getData() {
-
+    fun getData(day: String): ArrayList<MealEntryTemp> {
+        val db = writableDatabase
+        val finalData = ArrayList<MealEntryTemp>()
+        var cursor: Cursor? = null
+        try {
+            cursor = db.rawQuery("SELECT * FROM " + MealsDBContract.MealEntry.TABLE_NAME +
+                    " WHERE " + MealsDBContract.MealEntry.COLUMN_DAYS_OF_WEEK + " = '" + day + "'", null)
+        } catch (e: SQLiteException) {
+//            There is an error while trying to get the data
+            db.execSQL(SQL_CREATE_ENTRIES)
+            Log.i("DBHelper", "Error getting data or no data saved yet.")
+            return ArrayList()
+        }
+        var foodName: String
+        var dayName: String
+        var ateOR: Int
+        if(cursor!!.moveToFirst()) {
+            while (cursor.isAfterLast == false) {
+                foodName = cursor.getString(cursor.getColumnIndex(MealsDBContract.MealEntry.COLUMN_MEAL_NAME))
+                ateOR = cursor.getInt(cursor.getColumnIndex(MealsDBContract.MealEntry.COLUMN_ATE))
+                finalData.add(MealEntryTemp(day, foodName, ateOR))
+                cursor.moveToNext()
+            }
+        }
+        return  finalData
     }
 
 
