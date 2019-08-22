@@ -5,6 +5,7 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.renderscript.ScriptGroup
+import android.text.Editable
 import android.text.InputType
 import android.transition.Slide
 import android.transition.TransitionManager
@@ -35,15 +36,15 @@ class MondayActivity : AppCompatActivity() {
         setContentView(R.layout.activity_days)
 
         DBHelper = DBHelper(this)
-        addMeals("test123")
-        addMeals("meal1")
-        addMeals("meal2")
-        getMeals()
+//        addMeals("test123")
+//        addMeals("meal1")
+//        addMeals("meal2")
+        val arrMeals = getMeals()
 
 //      Update the macros on the top
         fileOutput()
 
-        val mylistAdapter = listAdapter(this, mealNames)
+        val mylistAdapter = listAdapter(this, arrMeals)
         var listView = findViewById(R.id.list) as ListView
         listView.adapter = mylistAdapter
 
@@ -304,11 +305,11 @@ class MondayActivity : AppCompatActivity() {
         var inputSteamReader = InputStreamReader(fileInputStream)
         val bufferReader = BufferedReader(inputSteamReader)
 //    TODO: Delete all stringBuilders in this method, as we don't need it anymore.
-        val stringBuilder = StringBuilder()
+//        val stringBuilder = StringBuilder()
         var text: String? = null
         var macroList = mutableListOf<String>()
         while ({ text = bufferReader.readLine(); text }() != null) {
-            stringBuilder.append(text + "\n")
+//            stringBuilder.append(text + "\n")
             macroList.add(breakString(text.toString()))
 //            Log.i("TAG", "|" + text + "|")
         }
@@ -323,8 +324,6 @@ class MondayActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.carbs).setText(macroList[2])
         findViewById<TextView>(R.id.protein).setText(macroList[3])
 
-//    TODO: Delete this and delete outputHolder textview in XML as well after testing is done.
-        outputHolder.setText(stringBuilder)
     }
 
 
@@ -385,13 +384,16 @@ class MondayActivity : AppCompatActivity() {
 //        Set onclicklistener to close the popup-window, update values, and store into .txt file internally
         val btnNew = view.findViewById<Button>(btnDone)
         btnNew.setOnClickListener {
-            popupWindow.dismiss()
+//            popupWindow.dismiss()
 
             val mealName = mealInput.text.toString()
             mealNames.add(mealName)
+            addMeals(mealName)
+            getMeals()
 
             Log.i("NEW", mealName)
-            popAddFood(text, edit)
+            mealInput.text.clear()
+//            popAddFood(text, edit)
         }
         val btnclose = view.findViewById<Button>(btnFinished)
         btnclose.setOnClickListener {
@@ -401,7 +403,9 @@ class MondayActivity : AppCompatActivity() {
             if (mealName.trim() != "") {
                 Log.i("CLOSE", " NOT EMPTY")
                 mealNames.add(mealName)
+                addMeals(mealName)
             }
+            getMeals()
             Log.i("CLOSE", "EMPTY")
             Log.i("CLOSE", mealName)
         }
@@ -420,18 +424,22 @@ class MondayActivity : AppCompatActivity() {
         DBHelper.insertMeal("Monday", mealName)
     }
 
-    fun getMeals() {
+    fun getMeals(): ArrayList<String> {
         var data: ArrayList<MealEntryTemp>
+        val meals = ArrayList<String>()
         data = DBHelper.getData("Monday")
-        val a = findViewById<TextView>(R.id.testingDB)
         val strBuilder = StringBuilder()
         data.forEach {
             strBuilder.append("" + it.mealName + " - " + it.day + " - " + it.ate + "\n")
+            meals.add(it.mealName)
             Log.i("DATA", ": " + it.mealName)
             Log.i("DATA", ": " + it.day)
             Log.i("DATA", ": " + it.ate)
         }
-        a.setText(strBuilder)
+        val mylistAdapter = listAdapter(this, meals)
+        var listView = findViewById(R.id.list) as ListView
+        listView.adapter = mylistAdapter
+        return meals
     }
 
 }
