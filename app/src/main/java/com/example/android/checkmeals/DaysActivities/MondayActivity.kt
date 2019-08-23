@@ -29,23 +29,13 @@ class MondayActivity : AppCompatActivity() {
         setContentView(R.layout.activity_days)
 
         DBHelper = DBHelper(this)
-//        addMeals("test123")
-//        addMeals("meal1")
-//        addMeals("meal2")
+
 
 //      Update the macros on the top whenever this activity is open
         fileOutput()
 
 //        Update the list of meals that user has entered
         updateView(getMeals())
-
-
-//        Update the list of meals that user has entered
-//        val mylistAdapter = listAdapter(this, getMeals())
-//        var listView = findViewById(R.id.list) as ListView
-//        listView.adapter = mylistAdapter
-
-
 
 //        Set up OnClickListener for each textview macros so user can edit directly from there
 //        TODO: Remove findviewbyid and directly use onclicklistener using ID names! This is the better Kotlin (Lambda) way!
@@ -76,8 +66,6 @@ class MondayActivity : AppCompatActivity() {
             var setEdit = "Calories"
             popup(setLine, setEdit)
         }
-
-
     }
 
     // Inflate the menu options from the XML file.
@@ -96,7 +84,7 @@ class MondayActivity : AppCompatActivity() {
 //                val toast = Toast.makeText(applicationContext, "Adding Meals...", Toast.LENGTH_SHORT)
 //                toast.show()
 //                TODO: NEED NEW POPUP FUNCTION AS ITS VERY DIFFERENT
-                popAddFood("Please enter the meal one and then press \"Add Another\" to add another meal. Press \"Finish\" once all meals are added.", "Enter Meal Name")
+                popAddFood("Enter meal name here and press \"Add Another\" to add another meal. \n Press \"Finish\" once all meals are added.", "Enter Meal Name")
                 true
             }
 //            Just testing purposes, TODO: Delete this!
@@ -110,6 +98,9 @@ class MondayActivity : AppCompatActivity() {
     }
 
 
+//    Update the list that user sees whenever the user adds any meals
+//    Uses the database to check the respectful checkboxes as well
+//    @param data -- Takes in an arraylist of the meals
     fun updateView(data: ArrayList<String>) {
         data.forEach {
             val id = addCheckBox(it)
@@ -117,6 +108,9 @@ class MondayActivity : AppCompatActivity() {
 //            SET THIS CHECKBOX WITH THE DATA
 //            CHECK IF IT IS SUPPOSE TO BE CHECKED OR NOT.
 //            SET OTHER SPECIFIC ATTRIBUTES IF THERE
+
+//            Make a clicklistener so we know when user clicks on it.
+//            Will allow us to save updated data in the database
             val box = findViewById<CheckBox>(id)
             box.setOnClickListener {
                 if(box.isChecked) {
@@ -137,11 +131,8 @@ class MondayActivity : AppCompatActivity() {
         checkBox.setPadding(30,0,0,0)
         params.setMargins(30,20,20,20)
 
-
         checkBox.layoutParams = params
         checkBox.id = View.generateViewId()
-
-
 
         checkBox.setText(mealName)
 
@@ -229,8 +220,7 @@ class MondayActivity : AppCompatActivity() {
                 0
         )
     }
-
-    //    Add new EditText inside the popup window
+//    Add new EditText inside the popup window
 //    @param view -- reference to the layout
 //    @param hint -- A string which is the hint for EditText
     fun addEditText(view: View, hint: String): Int {
@@ -245,7 +235,7 @@ class MondayActivity : AppCompatActivity() {
         return editText.id
     }
 
-    //    Add new Button inside the popup window
+//    Add new Button inside the popup window
 //    @param view -- reference to the layout
 //    @param text -- A string which is the text inside Button
     fun addBtn(view: View, text: String): Int {
@@ -259,7 +249,7 @@ class MondayActivity : AppCompatActivity() {
         return btn.id
     }
 
-    //    Create new or open if already created a file and input the data given by user
+//    Create new or open if already created a file and input the data given by user
 //    @param data -- A String which includes name of macro and amount of grams
     private fun fileInput(data: String) {
         val fileOutputStream: FileOutputStream
@@ -279,7 +269,7 @@ class MondayActivity : AppCompatActivity() {
         Toast.makeText(applicationContext, "Data saved in file!", Toast.LENGTH_SHORT).show()
     }
 
-    //    Read the data from the file and fill the macros when activity loads if user previously entered the data
+//    Read the data from the file and fill the macros when activity loads if user previously entered the data
     private fun fileOutput() {
         var fileInputStream: FileInputStream
         val file = "macroDays.txt"
@@ -287,45 +277,34 @@ class MondayActivity : AppCompatActivity() {
         try {
             fileInputStream = openFileInput(file)
         } catch (e: Exception) {
-            Toast.makeText(applicationContext, "FILE NOT FOUND", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "File Not Found.", Toast.LENGTH_SHORT).show()
             return
         }
         var inputSteamReader = InputStreamReader(fileInputStream)
         val bufferReader = BufferedReader(inputSteamReader)
-//    TODO: Delete all stringBuilders in this method, as we don't need it anymore.
-//        val stringBuilder = StringBuilder()
         var text: String? = null
         var macroList = mutableListOf<String>()
         while ({ text = bufferReader.readLine(); text }() != null) {
-//            stringBuilder.append(text + "\n")
             macroList.add(breakString(text.toString()))
-//            Log.i("TAG", "|" + text + "|")
         }
-//        Log.i("MACRO", "|" + macroList[0] + "|")
-//        Log.i("MACRO", "|" + macroList[1] + "|")
-//        Log.i("MACRO", "|" + macroList[2] + "|")
-//        Log.i("MACRO", "|" + macroList[3] + "|")
 
 //    Set the macro values whenever the page is opened
         findViewById<TextView>(R.id.calories).setText(macroList[0])
         findViewById<TextView>(R.id.fats).setText(macroList[1])
         findViewById<TextView>(R.id.carbs).setText(macroList[2])
         findViewById<TextView>(R.id.protein).setText(macroList[3])
-
     }
 
 
-    //    Break the data so we can get the macro numbers only
+//    Break the data so we can get the macro numbers only
 //    @param data -- A String which includes name of macro and amount of grams
 //    @return String -- returns the number of grams in each macro
     private fun breakString(data: String): String {
         val parts = data.split(" ")
-//        Log.d("SPLIT", "|" + parts[0] + "|")
-//        Log.d("SPLIT", "|" + parts[1] + "|")
         return parts[1]
     }
 
-    //    Pop-up-Window used for allowing users to add meals
+//    Pop-up-Window used for allowing users to add meals
 //    @param text -- A string variable which says what the popup window is for
 //    @param edit -- A string variable which shows the hint behind edittext
     private fun popAddFood(text: String, edit: String) {
@@ -352,7 +331,6 @@ class MondayActivity : AppCompatActivity() {
             val slideOut = Slide()
             slideOut.slideEdge = Gravity.RIGHT
             popupWindow.exitTransition = slideOut
-//            Toast.makeText(applicationContext, "Done!", Toast.LENGTH_SHORT).show()
         }
 
 //        Set the text and hint for the popup view
@@ -372,13 +350,10 @@ class MondayActivity : AppCompatActivity() {
 //        Set onclicklistener to close the popup-window, update values, and store into .txt file internally
         val btnNew = view.findViewById<Button>(btnDone)
         btnNew.setOnClickListener {
-//            popupWindow.dismiss()
-
             val mealName = mealInput.text.toString()
             addMeals(mealName)
             Log.i("NEW", mealName)
             mealInput.text.clear()
-//            popAddFood(text, edit)
         }
         val btnclose = view.findViewById<Button>(btnFinished)
         btnclose.setOnClickListener {
@@ -386,11 +361,8 @@ class MondayActivity : AppCompatActivity() {
 
             val mealName = mealInput.text.toString()
             if (mealName.trim() != "") {
-                Log.i("CLOSE", " NOT EMPTY")
                 addMeals(mealName)
             }
-            Log.i("CLOSE", "EMPTY")
-            Log.i("CLOSE", mealName)
         }
 
 //        Show the popup window on top of the main root layout
@@ -403,24 +375,22 @@ class MondayActivity : AppCompatActivity() {
         )
     }
 
+//    Adds the meals into the database
+//    @param mealName -- The name of the meal to add into the database
     fun addMeals(mealName: String) {
         DBHelper.insertMeal("Monday", mealName)
         updateView(getMeals())
     }
 
+//    Get all the meals from the database that are in Monday
+//    @return ArrayList -- Returns an arraylist of meals
     fun getMeals(): ArrayList<String> {
         var data: ArrayList<MealEntryTemp>
         val meals = ArrayList<String>()
         data = DBHelper.getData("Monday")
-        val strBuilder = StringBuilder()
         data.forEach {
-            strBuilder.append("" + it.mealName + " - " + it.day + " - " + it.ate + "\n")
             meals.add(it.mealName)
-            Log.i("DATA", ": " + it.mealName)
-            Log.i("DATA", ": " + it.day)
-            Log.i("DATA", ": " + it.ate)
         }
         return meals
     }
-
 }
