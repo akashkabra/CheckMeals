@@ -25,10 +25,8 @@ import kotlin.math.log
 
 class MondayActivity : AppCompatActivity() {
 
-    //    TODO: The whole SQLite database implementation
+    //    TODO: The whole SQLite database implementation -- (Partly done)
     lateinit var DBHelper: DBHelper
-
-    var mealNames = arrayListOf<String>("Hello", "Test")
 
     //    TODO: REMOVE ALL FINDVIEWBYID, REPLACE USING LAMBDA. Makes code more precise since kotlin allows us to omit findviewbyid.
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,12 +37,16 @@ class MondayActivity : AppCompatActivity() {
 //        addMeals("test123")
 //        addMeals("meal1")
 //        addMeals("meal2")
-        val arrMeals = getMeals()
 
-//      Update the macros on the top
+//      Update the macros on the top whenever this activity is open
         fileOutput()
 
-        val mylistAdapter = listAdapter(this, arrMeals)
+//        Update the list of meals that user has entered
+        updateView(getMeals())
+
+
+//        Update the list of meals that user has entered
+        val mylistAdapter = listAdapter(this, getMeals())
         var listView = findViewById(R.id.list) as ListView
         listView.adapter = mylistAdapter
 
@@ -82,18 +84,25 @@ class MondayActivity : AppCompatActivity() {
 
 
 
-
-        val listview = findViewById<ListView>(R.id.list)
-        val num = listview.count
+//        TODO: Delete this later
+        val num = listView.count
         Toast.makeText(applicationContext, "num: " + num, Toast.LENGTH_SHORT).show()
 
-        listview.setOnItemClickListener{parent, view, position, id ->
-            val item = position
-            Log.i("LSFSF", ":" + position)
-
+        listView.onItemClickListener = AdapterView.OnItemClickListener{parent, view, position, id ->
+            val selectedItem = parent.getItemAtPosition(position) as String
+            Log.i("LISTVIEW", selectedItem)
         }
 
+    }
 
+    fun updateView(data: ArrayList<String>) {
+        data.forEach {
+            addCheckBox(it)
+//            MAKE NEW CHECKBOX & GET ITS ID
+//            SET THIS CHECKBOX WITH THE DATA
+//            CHECK IF IT IS SUPPOSE TO BE CHECKED OR NOT.
+//            SET OTHER SPECIFIC ATTRIBUTES IF THERE
+        }
     }
 
     // Inflate the menu options from the XML file.
@@ -161,6 +170,28 @@ class MondayActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+
+    fun addCheckBox(mealName: String) {
+        val linearLayout = findViewById<LinearLayout>(R.id.root_layout)
+        val checkBox = CheckBox(this)
+
+        val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        params.setMargins(8,8,8,8)
+
+
+        checkBox.layoutParams = params
+        checkBox.setPadding(100,0,0,0)
+
+
+//        checkbox.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+
+        checkBox.setText(mealName)
+        checkBox.textSize = 20F
+
+        linearLayout.addView(checkBox)
     }
 
 //    Pop-up-Window used for setting up macros
@@ -387,7 +418,6 @@ class MondayActivity : AppCompatActivity() {
 //            popupWindow.dismiss()
 
             val mealName = mealInput.text.toString()
-            mealNames.add(mealName)
             addMeals(mealName)
             getMeals()
 
@@ -402,7 +432,6 @@ class MondayActivity : AppCompatActivity() {
             val mealName = mealInput.text.toString()
             if (mealName.trim() != "") {
                 Log.i("CLOSE", " NOT EMPTY")
-                mealNames.add(mealName)
                 addMeals(mealName)
             }
             getMeals()

@@ -70,6 +70,7 @@
             android:text="156"/>
     </LinearLayout>
 
+
     <ListView
         android:id="@+id/list"
         android:choiceMode="multipleChoiceModal"
