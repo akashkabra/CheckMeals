@@ -41,17 +41,25 @@ class DBHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, nul
         return true
     }
 
-//TODO: MAKE FUNCTION FOR UPDATE FOR WHEN USER EATS THE MEAL
+    fun updateMeal(day: String, mealName: String, ate: Int): Boolean {
+        val db = writableDatabase
+        val values = ContentValues()
+        values.put(MealsDBContract.MealEntry.COLUMN_ATE, ate)
+
+        db.update(MealsDBContract.MealEntry.TABLE_NAME, values, MealsDBContract.MealEntry.COLUMN_MEAL_NAME + " = \"" + mealName + "\" AND " +
+        MealsDBContract.MealEntry.COLUMN_DAYS_OF_WEEK + " = \"" + day + "\"", null)
+
+        return true
+    }
 
 
-//    TODO: DELETE FUNCTION.
-//    @Throws(SQLiteConstraintException::class)
-//    fun deleteMeal(mealName: String): Boolean {
-//
-//        val db = writableDatabase
-//
-//        return true
-//    }
+    @Throws(SQLiteConstraintException::class)
+    fun deleteMeal(mealName: String): Boolean {
+        val db = writableDatabase
+        db.delete(MealsDBContract.MealEntry.TABLE_NAME, MealsDBContract.MealEntry.COLUMN_MEAL_NAME + " = \"" + mealName + "\"", null)
+
+        return true
+    }
 
     fun getData(day: String): ArrayList<MealEntryTemp> {
         val db = writableDatabase

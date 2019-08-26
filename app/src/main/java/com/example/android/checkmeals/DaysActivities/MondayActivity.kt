@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.view.MotionEventCompat
 import android.text.InputType
 import android.transition.Slide
 import android.transition.TransitionManager
@@ -101,9 +102,15 @@ class MondayActivity : AppCompatActivity() {
 //    Update the list that user sees whenever the user adds any meals
 //    Uses the database to check the respectful checkboxes as well
 //    @param data -- Takes in an arraylist of the meals
-    fun updateView(data: ArrayList<String>) {
+    fun updateView(data: ArrayList<MealEntryTemp>) {
         data.forEach {
-            val id = addCheckBox(it)
+            val id = addCheckBox(it.mealName)
+            val box = findViewById<CheckBox>(id)
+            if (it.ate == 1) {
+                box.isChecked = true
+            } else {
+                box.isChecked = false
+            }
 //  DONE          MAKE NEW CHECKBOX & GET ITS ID
 //            SET THIS CHECKBOX WITH THE DATA
 //            CHECK IF IT IS SUPPOSE TO BE CHECKED OR NOT.
@@ -111,14 +118,27 @@ class MondayActivity : AppCompatActivity() {
 
 //            Make a clicklistener so we know when user clicks on it.
 //            Will allow us to save updated data in the database
-            val box = findViewById<CheckBox>(id)
             box.setOnClickListener {
                 if(box.isChecked) {
+                    DBHelper.updateMeal("Monday", box.text.toString(), 1)
                     Log.i("CHECKBOX", "CHECKED: " + box.text)
                 } else {
+                    DBHelper.updateMeal("Monday", box.text.toString(), 2)
                     Log.i("CHECKBOX", "NOT CHECKED: " + box.text)
                 }
             }
+            box.setOnLongClickListener {
+                Log.d("Long Press", "Long Press")
+                DBHelper.deleteMeal(box.text.toString())
+                finish()
+                overridePendingTransition(0,0)
+                startActivity(intent)
+                overridePendingTransition(0,0)
+
+                Toast.makeText(applicationContext, "Meal Deleted", Toast.LENGTH_SHORT).show()
+                return@setOnLongClickListener true
+            }
+
         }
     }
 
@@ -139,6 +159,8 @@ class MondayActivity : AppCompatActivity() {
         checkBox.textSize = 21F
 
         linearLayout.addView(checkBox)
+
+
         return checkBox.id
     }
 
@@ -384,12 +406,15 @@ class MondayActivity : AppCompatActivity() {
 
 //    Get all the meals from the database that are in Monday
 //    @return ArrayList -- Returns an arraylist of meals
-    fun getMeals(): ArrayList<String> {
+    fun getMeals(): ArrayList<MealEntryTemp> {
         var data: ArrayList<MealEntryTemp>
-        val meals = ArrayList<String>()
+        val meals = ArrayList<MealEntryTemp>()
+
         data = DBHelper.getData("Monday")
         data.forEach {
-            meals.add(it.mealName)
+            val mealName = it.mealName
+            val ate = it.ate
+            meals.add(MealEntryTemp("Monday", mealName, ate))
         }
         return meals
     }
