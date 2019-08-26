@@ -12,6 +12,12 @@ import com.example.android.checkmeals.DaysActivities.*
 
 class MainActivity : AppCompatActivity() {
 
+//    FIRST OPEN:
+//    TODO: Add popup letting users know how to use the app and things to click
+//    TODO: Add menu
+//      - Delete all meals all days
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

@@ -1,11 +1,9 @@
 package com.example.android.checkmeals.DaysActivities
 
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.view.MotionEventCompat
 import android.text.InputType
 import android.transition.Slide
 import android.transition.TransitionManager
@@ -18,11 +16,14 @@ import com.example.android.checkmeals.R
 import kotlinx.android.synthetic.main.activity_days.*
 import java.io.*
 import java.lang.Exception
-import java.lang.StringBuilder
 
 class MondayActivity : AppCompatActivity() {
 
-    //    TODO: The whole SQLite database implementation -- (Partly done)
+//    TODO: Add Menu
+//      - Delete all meals on specific day (These day activities...) (delete ALL from main activity only!)
+//      - Uncheck all meals (Basically, a restart)
+
+    //    TODO: The whole SQLite database implementation -- (MOSTLY done)
     lateinit var DBHelper: DBHelper
 
     //    TODO: REMOVE ALL FINDVIEWBYID, REPLACE USING LAMBDA. Makes code more precise since kotlin allows us to omit findviewbyid.
@@ -104,6 +105,7 @@ class MondayActivity : AppCompatActivity() {
 //    Uses the database to check the respectful checkboxes as well
 //    @param data -- Takes in an arraylist of the meals
     fun updateView(data: ArrayList<MealEntryTemp>) {
+//      Start fresh whenever this method is called
         val linearLayout = findViewById<LinearLayout>(R.id.scrollview)
         linearLayout.removeAllViews()
 
@@ -115,13 +117,7 @@ class MondayActivity : AppCompatActivity() {
             } else {
                 box.isChecked = false
             }
-//  DONE          MAKE NEW CHECKBOX & GET ITS ID
-//            SET THIS CHECKBOX WITH THE DATA
-//            CHECK IF IT IS SUPPOSE TO BE CHECKED OR NOT.
-//            SET OTHER SPECIFIC ATTRIBUTES IF THERE
 
-//            Make a clicklistener so we know when user clicks on it.
-//            Will allow us to save updated data in the database
             box.setOnClickListener {
                 if(box.isChecked) {
                     DBHelper.updateMeal("Monday", box.text.toString(), 1)
