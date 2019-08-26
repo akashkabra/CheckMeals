@@ -1,6 +1,7 @@
 package com.example.android.checkmeals.DaysActivities
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -103,6 +104,9 @@ class MondayActivity : AppCompatActivity() {
 //    Uses the database to check the respectful checkboxes as well
 //    @param data -- Takes in an arraylist of the meals
     fun updateView(data: ArrayList<MealEntryTemp>) {
+        val linearLayout = findViewById<LinearLayout>(R.id.scrollview)
+        linearLayout.removeAllViews()
+
         data.forEach {
             val id = addCheckBox(it.mealName)
             val box = findViewById<CheckBox>(id)
@@ -373,9 +377,13 @@ class MondayActivity : AppCompatActivity() {
         val btnNew = view.findViewById<Button>(btnDone)
         btnNew.setOnClickListener {
             val mealName = mealInput.text.toString()
-            addMeals(mealName)
-            Log.i("NEW", mealName)
-            mealInput.text.clear()
+            if (mealName.trim() != "") {
+                addMeals(mealName)
+                Log.i("NEW", mealName)
+                mealInput.text.clear()
+            } else {
+                Toast.makeText(applicationContext, "Please input a value", Toast.LENGTH_SHORT).show()
+            }
         }
         val btnclose = view.findViewById<Button>(btnFinished)
         btnclose.setOnClickListener {
