@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
+import com.example.android.checkmeals.Database.DBHelper
 import com.example.android.checkmeals.DaysActivities.*
 
 class MainActivity : AppCompatActivity() {
@@ -17,10 +18,15 @@ class MainActivity : AppCompatActivity() {
 //    TODO: Add menu
 //      - Delete all meals all days
 
+    lateinit var DBHelper: DBHelper
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        DBHelper = DBHelper(this)
+//        DBHelper.getDB()
 
         // Find the textview with id monday
         val monday = findViewById<TextView>(R.id.monday)
@@ -98,9 +104,10 @@ class MainActivity : AppCompatActivity() {
                 toast.show()
                 true
             }
-            R.id.setMacros -> {
+            R.id.dropTable -> {
+                DBHelper.getDB()
                 // TODO: Make a XML + Kotlin file for this menu setting and create an intent to go to that page.
-                Toast.makeText(applicationContext, "Macros Clicked!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "All Meals Deleted!", Toast.LENGTH_SHORT).show()
                 true
             }else -> super.onOptionsItemSelected(item)
         }

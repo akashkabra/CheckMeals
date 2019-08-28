@@ -15,6 +15,7 @@ class DBHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, nul
 
 //    Create the database
     override fun onCreate(db: SQLiteDatabase) {
+        db.execSQL(SQL_DELETE_ENTRIES)
         db.execSQL(SQL_CREATE_ENTRIES)
     }
 
@@ -22,6 +23,11 @@ class DBHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, nul
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL(SQL_DELETE_ENTRIES)
         DATABASE_VERSION++
+        onCreate(db)
+    }
+
+    fun getDB() {
+        val db = writableDatabase
         onCreate(db)
     }
 
@@ -87,11 +93,6 @@ class DBHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, nul
         }
         return  finalData
     }
-
-
-
-
-
 
 
 

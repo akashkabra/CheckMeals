@@ -12,8 +12,8 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/setMacros"
-        android:title="Set Macros"
+        android:id="@+id/dropTable"
+        android:title="Delete All Meals"
         app:showAsAction="never" />
 
 
